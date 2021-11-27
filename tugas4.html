@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Get All Pokemon!</h1>
+    <button type="button" onclick="getPokemon()">GET!</button>
+    <div class="pokemon-Container"></div>
+    <script>
+      function getPokemon() {
+        pokemonContainer = document.querySelector('.pokemon-Container');
+        function fetchPokemon(id) {
+          fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+              createPokemon(data);
+            });
+        }
+        function fetchPokemons(number) {
+          for (let i = 1; i <= number; i++) {
+            fetchPokemon(i);
+          }
+        }
+
+        function createPokemon(pokemon) {
+          const kartu = document.createElement('div');
+          kartu.classList.add('kartu');
+
+          const isikartu = document.createElement('div');
+          isikartu.classList.add('isiKartu');
+
+          const name = document.createElement('p');
+          name.innerHTML = `No.${pokemon.id.toString()} - ${pokemon.name}`;
+
+          const gambarPoke = document.createElement('img');
+          gambarPoke.src = pokemon.sprites.front_default;
+          gambarPoke.width = '150';
+
+          const tipe = document.createElement('p');
+          const types = pokemon.types[0].type.name;
+          tipe.innerHTML = types;
+
+          kartu.style.margin = '25px';
+          kartu.style.width = '180px';
+          kartu.style.display = 'inline-block';
+
+          pokemonContainer.appendChild(kartu);
+          kartu.appendChild(isikartu);
+
+          isikartu.appendChild(name);
+          isikartu.appendChild(gambarPoke);
+          isikartu.appendChild(tipe);
+
+          isikartu.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.3)';
+          isikartu.style.padding = '2px 20px';
+
+          if (types == 'grass') {
+            kartu.style.backgroundColor = 'rgb(42, 177, 42)';
+          } else if (types == 'fire') {
+            kartu.style.backgroundColor = 'rgb(241, 99, 16)';
+          } else if (types == 'water') {
+            kartu.style.backgroundColor = 'rgb(16, 177, 241)';
+          } else if (types == 'bug') {
+            kartu.style.backgroundColor = 'rgb(145, 147, 148)';
+          } else if (types == 'normal') {
+            kartu.style.backgroundColor = 'rgb(231, 213, 154)';
+          } else if (types == 'poison') {
+            kartu.style.backgroundColor = 'rgb(168, 81, 161)';
+          } else if (types == 'electric') {
+            kartu.style.backgroundColor = 'rgb(232, 247, 100)';
+          } else {
+            kartu.style.backgroundColor = 'rgb(175, 68, 6)';
+          }
+        }
+        fetchPokemons(30);
+      }
+    </script>
+  </body>
+</html>
